@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./style.css">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="box">
+        <div id="alertmsg" class=""></div>
+        <div class="form">
+            <h2>sign Up</h2>
+            <div class="inputBox">
+                <input type="text" id="fIr" required="required">
+                <span>First Name</span>
+                <i></i>
+            </div>
+            <div class="inputBox">
+                <input type="text" id="lSt" required="required">
+                <span>Last Name</span>
+                <i></i>
+            </div>
+            <div class="inputBox">
+                <input type="text" id="eMail" required="required">
+                <span>username or Email</span>
+                <i></i>
+            </div>
+            <div class="inputBox">
+                <input type="password" id="paSS" required="required">
+                <span>password</span>
+                <i></i>
+            </div>
+            <div class="links">
+                <a href="#">forgotpassword</a>
+                <a href="index.html">signIn</a>
+            </div>
+            <input type="submit" onclick="siGNup()" value="signup">
+        </div>
+    </div>
+    <script>
+        function showAlert(msg, className) {
+            alertmsg.innerText = msg
+            alertmsg.className = className
+        }
+        var allUser = []
+        if (localStorage.user) {
+            var ollData = JSON.parse(localStorage.getItem("user"))
+            var allUser = ollData
+
+        }
+        function siGNup() {
+            if (!fIr.value || !lSt.value || !eMail.value || !paSS.value) {
+                showAlert("please fill your Details 😊😂", 'alert alert-danger mt-3 text-center   m-auto')
+                setTimeout(() => {
+                    showAlert("", "")
+                }, 3000)
+                alert("please fill your Details 😊😂")
+            } else {
+                var user = {
+                    firstname: fIr.value,
+                    lastname: lSt.value,
+                    email: eMail.value,
+                    password: paSS.value,
+                    allTodo: []
+                }
+                console.log(allUser);
+                allUser.push(user)
+                localStorage.setItem("user", JSON.stringify(allUser))
+                window.location.href = "index.html"
+                fIr.value = ""
+                lSt.value = ""
+                eMail.value = ""
+                paSS.value = ""
+                alert("registerd succesfully")
+            }
+        }
+    </script>
+</body>
+
+</html>

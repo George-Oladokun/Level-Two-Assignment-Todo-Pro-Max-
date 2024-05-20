@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="./bootstrap-5.2.3-dist/css/bootstrap.css">
+  <title>Document</title>
+</head>
+
+<body onload="display()">
+  <div class="div1">
+    <div id="alertmsg" class=""></div>
+    <button onclick="back()" class="bg-primary form-control w-25">Go Back to Dashboard</button>
+    <table id="taBle" border="1">
+
+    </table>
+  </div>
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content"
+        style="background-image: url(./9_系统壁纸.jpg);background-repeat:no-repeat;background-position: center;background-size: cover;">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Input your new details</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <input id="ntoDo" type="text" class="w-50 m-auto my-2 form-control" placeholder="Enter your New Todo Title"
+            required>
+          <input id="ntodoC" type="text" class="w-50 m-auto my-2 form-control"
+            placeholder="Enter your New  Todo Category" required>
+          <input id="ntodoT" type="time" class="w-50 m-auto my-2 form-control" placeholder="Enter your New Todo Time"
+            required>
+        </div>
+        <div class="modal-footer">
+          <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button> -->
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="eDit()">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    function showAlert(msg, className) {
+      alertmsg.innerText = msg
+      alertmsg.className = className
+    }
+    var cur = JSON.parse(localStorage.getItem("curUserindex"))
+    var user = JSON.parse(localStorage.getItem("user"))
+    //  console.log(user)
+    var curser = user[cur]
+    var curserallTodo = curser.allTodo
+    console.log(curserallTodo)
+
+
+    function display() {
+
+      taBle.innerHTML = ""
+      taBle.innerHTML += `    
+       <tr style="text-align:center;">
+          <th>S/N</th>
+          <th>Todo Title</th>
+          <th>Todo Category</th>
+          <th>Todo Time</th>
+          <th>actions</th>
+      </tr>
+       `
+      for (let index = 0; index < curserallTodo.length; index++) {
+        // taBle.innerHTML =""
+        taBle.innerHTML += `
+        <tr style="text-align:center;">
+       <td>${[index + 1]}</td>
+       <td>${curserallTodo[index].Todotitle}</td>
+       <td>${curserallTodo[index].Todocategory}</td>
+       <td>${curserallTodo[index].Todotime}</td>
+       <td> <button class="btn btn-danger my-2" onclick="del(${index})">delete todo</button>
+        <button data-bs-toggle="modal" data-bs-target="#exampleModal" class="btn btn-warning my-2" " >Edit Todo</button>
+        </td>
+        </tr>`
+      }
+
+    }
+    function del(userindex) {
+      var userResponse = confirm("Are you sure you want Delete these User")
+      if (userResponse == true) {
+        // taBle.innerHTML =""
+        curserallTodo.splice(userindex, 1)
+        var loc = localStorage.setItem("user", JSON.stringify(user))
+        display()
+        showAlert("Delete successfully 👍👍✔✔", 'alert alert-success mt-3 text-center w-100 m-auto')
+        setTimeout(() => {
+          showAlert("", "")
+        }, 3000)
+      } else {
+        if (userResponse == false) {
+          curserallTodo.splice(userindex, 0)
+          display()
+        }
+      }
+    }
+    function eDit(Editindex) {
+      var input = {
+        Todotitle: ntoDo.value,
+        Todocategory: ntodoC.value,
+        Todotime: ntodoT.value
+      }
+
+      curserallTodo.splice(Editindex, 1, input)
+      var loc = localStorage.setItem("user", JSON.stringify(user))
+      display()
+      showAlert("Edit successfully 👍👍✔✔", 'alert alert-success mt-3 text-center w-50 m-auto')
+      setTimeout(() => {
+        showAlert("", "")
+      }, 3000)
+
+    }
+    function back() {
+      window.location.href = "dash.html"
+    }
+  </script>
+  <script src="./bootstrap-5.2.3-dist/js/bootstrap.js"></script>
+</body>
+
+</html>
